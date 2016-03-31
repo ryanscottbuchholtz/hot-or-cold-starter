@@ -18,6 +18,9 @@ var guesses = [];
 
 var newNumber = randomNumberGenerator();
 
+
+//functions
+
 function randomNumberGenerator() {
   var randomNumber = (Math.floor(Math.random()*100) + 1);
   return randomNumber;
@@ -38,10 +41,10 @@ function validateInput() {
     alert('Guess must be between 1 and 100');
   }
   //validate number not text
+   
 
   //number clears, track the guess
   else {
-    numberComparison(newNumber, userGuess.value);
     guessTracker();
   }
   //reset value in guess input box
@@ -71,8 +74,9 @@ function numberComparison(randomNumber, userInputNumber) {
   else if ((randomNumber / userInputNumber) === 1 ) {
     $('#feedback').text('Your Guessed the number! Click +New Game to play again.');
     //block out the input box & hide Guess button - do not allow anymore input;
+    $('li').last().css( "background-color", "green");
     $('#userGuess').attr('disabled', 'disabled');
-    $('#guessButton').hide();   
+    $('#guessButton').hide();
   }
 }
 
@@ -87,6 +91,8 @@ function guessTracker() {
   //append userGuessesTrackingList with new <li> element with text = userGuess.value
   $('#guessList').append("<li>" + userGuess.value + "</li>");
   guesses.push(userGuess.value | 0);
+  //return warm cold based on user input
+  numberComparison(newNumber, userGuess.value);
   //increase guess counter
   guessCounter();
   //pushed value as a number
