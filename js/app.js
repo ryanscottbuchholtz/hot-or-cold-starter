@@ -41,7 +41,9 @@ function validateInput() {
     alert('Guess must be between 1 and 100');
   }
   //validate number not text
-   
+   else if (($.isNumeric(userGuess.value)) === false) {
+    alert("Numbers only");
+   }
 
   //number clears, track the guess
   else {
