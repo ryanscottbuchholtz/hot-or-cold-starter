@@ -45,10 +45,16 @@ function numberComparison(randomNumber, userInputNumber) {
   }
   else if ((randomNumber / userInputNumber) === 1 ) {
     $('#feedback').text('Your Guessed the number! Click +New Game to play again.');
+    //block out the input box & hide Guess button - do not allow anymore input;
     $('#userGuess').attr('disabled', 'disabled');
-    $('#guessButton').attr('disabled', 'disabled');
-    //block out the input box - do not allow anymore input;
+    $('#guessButton').hide();
+    
   }
+}
+
+function validateInput() {
+  //validate user input is between 1 and 100
+  //validate number not text
 }
 
 function guessCounter() {
@@ -59,11 +65,25 @@ function guessCounter() {
 }
 
 function guessTracker() {
-  //append userGuessesTrackingList with new <li> element with text = userGuess.value
+  //check to see if user input has been input before.
+  if($.inArray(userGuess.value | 0, guesses) != -1) {
+    alert('You guessed this number already');
+  }
+   //append userGuessesTrackingList with new <li> element with text = userGuess.value
+  else {
+    $('#guessList').append("<li>" + userGuess.value + "</li>");
+    guesses.push(userGuess.value | 0);
+    //increase guess counter
+    guessCounter();
+  } //pushed value as a number
+  $("#userGuess").val("");
+  console.log(guesses);
 }
 
   function newGame() {
     $(".new").click(function() {
+      //reset the input box to blank
+      $("#userGuess").val("");
       //reset text in Warm/Cold div
       $("#feedback").text('Make your Guess!');
       //reset text in guess count and counter
@@ -76,6 +96,8 @@ function guessTracker() {
       $('#guessButton').removeAttr('disabled');
       //generate a new number
       newNumber = randomNumberGenerator();
+      //reset the tracker array
+      guesses = [];
       //play the game!
     });
   }
@@ -88,10 +110,9 @@ function guessTracker() {
     console.log(userGuess.value);
     //run function to compare user input to random number
     numberComparison(newNumber, userGuess.value);
-    //run function to increase guess count
-    guessCounter();
+    //run function to append guess to running guess list & count increase
+    guessTracker();
 
-    //run function to append guess to running guess list
   });
 }
   
