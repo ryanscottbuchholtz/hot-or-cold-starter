@@ -115,7 +115,8 @@ function guessTracker() {
 
   });
 }
-  
+
+//run the program  
 
 newGame();
 playGame();
