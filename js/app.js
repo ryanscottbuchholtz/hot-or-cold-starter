@@ -23,6 +23,31 @@ function randomNumberGenerator() {
   return randomNumber;
 }
 
+
+function validateInput() {
+  //validate number entered
+  if (userGuess.value === "") {
+    alert("Please enter a number between 1 and 100");
+  }
+  //check to see if user input has been input before.
+  else if ($.inArray(userGuess.value | 0, guesses) != -1) {
+    alert('You guessed this number already');
+  }
+  //validate user input is between 1 and 100
+  else if ((userGuess.value < 0)||(userGuess.value > 100)) {
+    alert('Guess must be between 1 and 100');
+  }
+  //validate number not text
+
+  //number clears, track the guess
+  else {
+    numberComparison(newNumber, userGuess.value);
+    guessTracker();
+  }
+  //reset value in guess input box
+  $("#userGuess").val("");
+}
+
 function numberComparison(randomNumber, userInputNumber) {
   //if difference between two supplied numbers is more than x do y
   if (((randomNumber - userInputNumber) > 40 ) || ((userInputNumber - randomNumber) > 40 )) {
@@ -47,14 +72,8 @@ function numberComparison(randomNumber, userInputNumber) {
     $('#feedback').text('Your Guessed the number! Click +New Game to play again.');
     //block out the input box & hide Guess button - do not allow anymore input;
     $('#userGuess').attr('disabled', 'disabled');
-    $('#guessButton').hide();
-    
+    $('#guessButton').hide();   
   }
-}
-
-function validateInput() {
-  //validate user input is between 1 and 100
-  //validate number not text
 }
 
 function guessCounter() {
@@ -65,54 +84,43 @@ function guessCounter() {
 }
 
 function guessTracker() {
-  //check to see if user input has been input before.
-  if($.inArray(userGuess.value | 0, guesses) != -1) {
-    alert('You guessed this number already');
-  }
-   //append userGuessesTrackingList with new <li> element with text = userGuess.value
-  else {
-    $('#guessList').append("<li>" + userGuess.value + "</li>");
-    guesses.push(userGuess.value | 0);
-    //increase guess counter
-    guessCounter();
-  } //pushed value as a number
+  //append userGuessesTrackingList with new <li> element with text = userGuess.value
+  $('#guessList').append("<li>" + userGuess.value + "</li>");
+  guesses.push(userGuess.value | 0);
+  //increase guess counter
+  guessCounter();
+  //pushed value as a number
   $("#userGuess").val("");
-  console.log(guesses);
 }
 
-  function newGame() {
-    $(".new").click(function() {
-      //reset the input box to blank
-      $("#userGuess").val("");
-      //reset text in Warm/Cold div
-      $("#feedback").text('Make your Guess!');
-      //reset text in guess count and counter
-      $('#count').text('0');
-      guessCount = 0;
-      //reset previous guesses
-      $('#guessList').empty();
-      //enable input field and button
-      $('#userGuess').removeAttr('disabled');
-      $('#guessButton').show();
-      //generate a new number
-      newNumber = randomNumberGenerator();
-      //reset the tracker array
-      guesses = [];
-      //play the game!
-    });
-  }
+function newGame() {
+  $(".new").click(function() {
+    //reset the input box to blank
+    $("#userGuess").val("");
+    //reset text in Warm/Cold div
+    $("#feedback").text('Make your Guess!');
+    //reset text in guess count and counter
+    $('#count').text('0');
+    guessCount = 0;
+    //reset previous guesses
+    $('#guessList').empty();
+    //enable input field and button
+    $('#userGuess').removeAttr('disabled');
+    $('#guessButton').show();
+    //generate a new number
+    newNumber = randomNumberGenerator();
+    //reset the tracker array
+    guesses = [];
+    //play the game!
+  });
+}
 
-  function playGame() {
+function playGame() {
   $("#guessButton").click(function(submitEvent) {
     //prevent button click from submitting input
     submitEvent.preventDefault();
-    //run function to capture user input (held in global variable)
-    console.log(userGuess.value);
-    //run function to compare user input to random number
-    numberComparison(newNumber, userGuess.value);
-    //run function to append guess to running guess list & count increase
-    guessTracker();
-
+    //run validate input
+    validateInput();
   });
 }
 
