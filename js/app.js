@@ -93,7 +93,7 @@ function guessTracker() {
       $('#guessList').empty();
       //enable input field and button
       $('#userGuess').removeAttr('disabled');
-      $('#guessButton').removeAttr('disabled');
+      $('#guessButton').show();
       //generate a new number
       newNumber = randomNumberGenerator();
       //reset the tracker array
